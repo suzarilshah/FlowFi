@@ -1,0 +1,39 @@
+{
+  "name": "flowfi-aws-deployment-checker",
+  "version": "1.0.0",
+  "description": "FlowFi AWS deployment status checker and resource validator",
+  "main": "check-deployment-status.js",
+  "scripts": {
+    "check-deployment": "node check-deployment-status.js",
+    "deploy": "npm run build && cdk deploy --require-approval never",
+    "build": "cd infrastructure && npm run build",
+    "status": "npm run check-deployment"
+  },
+  "dependencies": {
+    "@aws-sdk/client-api-gateway": "^3.450.0",
+    "@aws-sdk/client-cloudwatch": "^3.450.0",
+    "@aws-sdk/client-ec2": "^3.450.0",
+    "@aws-sdk/client-iam": "^3.450.0",
+    "@aws-sdk/client-lambda": "^3.450.0",
+    "@aws-sdk/client-rds": "^3.450.0",
+    "@aws-sdk/client-s3": "^3.450.0",
+    "@aws-sdk/client-sns": "^3.450.0",
+    "aws-cdk": "^2.1029.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "aws",
+    "deployment",
+    "status",
+    "checker",
+    "flowfi",
+    "accounting"
+  ],
+  "author": "FlowFi Team",
+  "license": "MIT"
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Document Intelligence Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .test-section { border: 1px solid #ddd; padding: 20px; margin: 20px 0; border-radius: 5px; }
+        .result { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .loading { color: #007bff; }
+    </style>
+</head>
+<body>
+    <h1>Azure Document Intelligence Connection Test</h1>
+    
+    <div class="test-section">
+        <h2>Configuration Check</h2>
+        <div id="config-results"></div>
+        <button onclick="checkConfiguration()">Check Configuration</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Azure Connection Test</h2>
+        <div id="connection-results"></div>
+        <button onclick="testAzureConnection()">Test Azure Connection</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Document Upload Test</h2>
+        <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png">
+        <button onclick="testDocumentUpload()">Upload & Analyze</button>
+        <div id="upload-results"></div>
+    </div>
+
+    <script>
+        // Import the Azure configuration from the app
+        async function checkConfiguration() {
+            const resultsDiv = document.getElementById('config-results');
+            resultsDiv.innerHTML = '<div class="loading">Checking configuration...</div>';
+            
+            try {
+                // Check if we're using Azure or local server
+                const response = await fetch('/src/config/azure-config.ts');
+                const configText = await response.text();
+                
+                const isUsingAzure = !configText.includes('local-server-no-key-required');
+                const hasNewEndpoint = configText.includes('flowfis.cognitiveservices.azure.com');
+                const hasNewApiKey = configText.includes('process.env.AZURE_DOCUMENT_INTELLIGENCE_API_KEY');
+                
+                resultsDiv.innerHTML = `
+                    <div class="result ${isUsingAzure ? 'success' : 'error'}">
+                        <strong>Using Azure Document Intelligence:</strong> ${isUsingAzure ? 'YES' : 'NO'}
+                    </div>
+                    <div class="result ${hasNewEndpoint ? 'success' : 'error'}">
+                        <strong>Azure Endpoint:</strong> ${hasNewEndpoint ? 'flowfis.cognitiveservices.azure.com' : 'Not updated'}
+                    </div>
+                    <div class="result ${hasNewApiKey ? 'success' : 'error'}">
+                        <strong>API Key:</strong> ${hasNewApiKey ? 'Updated with new credentials' : 'Not updated'}
+                    </div>
+                `;
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="result error">Error checking configuration: ${error.message}</div>`;
+            }
+        }
+
+        async function testAzureConnection() {
+            const resultsDiv = document.getElementById('connection-results');
+            resultsDiv.innerHTML = '<div class="loading">Testing Azure connection...</div>';
+            
+            try {
+                // Test Azure Document Intelligence connection
+                const response = await fetch('https://flowfis.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2023-07-31', {
+                    method: 'GET',
+                    headers: {
+                        'Ocp-Apim-Subscription-Key': 'process.env.AZURE_DOCUMENT_INTELLIGENCE_API_KEY',
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    resultsDiv.innerHTML = `
+                        <div class="result success">
+                            <strong>✅ Azure Connection Successful!</strong><br>
+                            <strong>Available Models:</strong> ${data.value ? data.value.length : 'N/A'}<br>
+                            <strong>Response:</strong> Connected to Azure Document Intelligence
+                        </div>
+                    `;
+                } else {
+                    resultsDiv.innerHTML = `
+                        <div class="result error">
+                            <strong>❌ Azure Connection Failed</strong><br>
+                            <strong>Status:</strong> ${response.status}<br>
+                            <strong>Status Text:</strong> ${response.statusText}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="result error">❌ Connection Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testDocumentUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const resultsDiv = document.getElementById('upload-results');
+            
+            if (!fileInput.files[0]) {
+                resultsDiv.innerHTML = '<div class="result error">Please select a file first</div>';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            resultsDiv.innerHTML = '<div class="loading">Uploading and analyzing document...</div>';
+
+            try {
+                // Convert file to base64
+                const base64 = await fileToBase64(file);
+                
+                // Test with Azure Document Intelligence
+                const response = await fetch('https://flowfis.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-invoice:analyze?api-version=2023-07-31', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Ocp-Apim-Subscription-Key': 'process.env.AZURE_DOCUMENT_INTELLIGENCE_API_KEY',
+                    },
+                    body: JSON.stringify({
+                        base64Source: base64.split(',')[1] // Remove data:image/... prefix
+                    }),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    resultsDiv.innerHTML = `
+                        <div class="result success">
+                            <strong>✅ Document Analysis Successful!</strong><br>
+                            <strong>Document Type:</strong> ${result.docType || 'Unknown'}<br>
+                            <strong>Confidence:</strong> ${result.confidence || 'N/A'}<br>
+                            <strong>Status:</strong> Analysis completed
+                        </div>
+                    `;
+                } else {
+                    resultsDiv.innerHTML = `
+                        <div class="result error">
+                            <strong>❌ Document Analysis Failed</strong><br>
+                            <strong>Status:</strong> ${response.status}<br>
+                            <strong>Status Text:</strong> ${response.statusText}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="result error">❌ Upload Error: ${error.message}</div>`;
+            }
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+    </script>
+</body>
+</html>

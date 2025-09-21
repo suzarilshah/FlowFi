@@ -1,0 +1,6 @@
+{
+  "error": "Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource.",
+  "statusCode": 401,
+  "timestamp": "2025-09-21T01:29:20.374Z",
+  "file": "/Users/suzarilshah/FlowFi/208113291122-20250905-333711896.pdf"
+}

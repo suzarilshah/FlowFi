@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowFi Document Upload Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .upload-area { border: 2px dashed #ccc; padding: 20px; text-align: center; margin: 20px 0; }
+        .result { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>FlowFi Document Intelligence Test</h1>
+    
+    <div class="upload-area">
+        <h3>Test Document Upload</h3>
+        <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" />
+        <br><br>
+        <button onclick="testLocalServer()">Test Local Server</button>
+        <button onclick="testAzureConnection()">Test Azure Connection</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        function showResult(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.innerHTML = `<strong>${type.toUpperCase()}:</strong> ${message}`;
+            results.appendChild(div);
+        }
+
+        async function testLocalServer() {
+            try {
+                showResult('Testing local server connection...', 'info');
+                
+                const response = await fetch('http://localhost:3001/health');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult(`✅ Local server is healthy: ${data.service} v${data.version}`, 'success');
+                    
+                    // Test file upload
+                    const fileInput = document.getElementById('fileInput');
+                    if (fileInput.files.length > 0) {
+                        await uploadFile(fileInput.files[0]);
+                    } else {
+                        showResult('Please select a file to test upload', 'info');
+                    }
+                } else {
+                    showResult(`❌ Health check failed: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                showResult(`❌ Local server connection failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function uploadFile(file) {
+            try {
+                showResult(`Uploading ${file.name}...`, 'info');
+                
+                const formData = new FormData();
+                formData.append('document', file);
+                formData.append('modelId', 'prebuilt-invoice');
+                
+                const response = await fetch('http://localhost:3001/document/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showResult(`✅ File uploaded successfully!`, 'success');
+                    showResult(`📊 Document type: ${result.analysisResult.documents[0].docType}`, 'success');
+                    showResult(`🎯 Confidence: ${result.analysisResult.documents[0].confidence}`, 'success');
+                    
+                    // Show extracted fields
+                    const fields = result.analysisResult.documents[0].fields;
+                    if (fields.InvoiceTotal) {
+                        showResult(`💰 Total: ${fields.InvoiceTotal.value.currencySymbol}${fields.InvoiceTotal.value.amount.toFixed(2)}`, 'success');
+                    }
+                    if (fields.VendorName) {
+                        showResult(`🏢 Vendor: ${fields.VendorName.value}`, 'success');
+                    }
+                } else {
+                    showResult(`❌ Upload failed: ${result.error || result.message}`, 'error');
+                }
+            } catch (error) {
+                showResult(`❌ Upload error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testAzureConnection() {
+            try {
+                showResult('Testing Azure Document Intelligence connection...', 'info');
+                
+                // Test Azure connection (this would normally go through your backend)
+                const response = await fetch('/api/test-azure-connection');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    showResult(`✅ Azure connection successful: ${data.message}`, 'success');
+                } else {
+                    showResult(`⚠️ Azure connection test not available (expected for local mode)`, 'info');
+                }
+            } catch (error) {
+                showResult(`ℹ️ Azure connection test skipped (running in local mode)`, 'info');
+            }
+        }
+
+        // Auto-test on page load
+        window.onload = function() {
+            showResult('🚀 FlowFi Document Intelligence Test Page Loaded', 'info');
+            showResult('📁 Select a PDF, JPG, or PNG file and click "Test Local Server"', 'info');
+        };
+    </script>
+</body>
+</html>

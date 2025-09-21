@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowFi Vector System Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background-color: #fafafa;
+        }
+        .test-section h3 {
+            color: #555;
+            margin-top: 0;
+        }
+        .query-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .document-item {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 3px solid #007bff;
+        }
+        .metadata {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .similarity {
+            font-weight: bold;
+            color: #28a745;
+        }
+        .error {
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .loading {
+            color: #007bff;
+            font-style: italic;
+        }
+        .sample-queries {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .sample-query {
+            background-color: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .sample-query:hover {
+            background-color: #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 FlowFi Vector System Test</h1>
+        
+        <div class="test-section">
+            <h3>📋 Vector Store Status</h3>
+            <button class="btn" onclick="checkVectorStore()">Check Document Count</button>
+            <button class="btn btn-secondary" onclick="populateSampleData()">Populate Sample Data</button>
+            <div id="status-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔍 Natural Language Query Test</h3>
+            <input type="text" id="query-input" class="query-input" placeholder="Ask a question about your expenses... (e.g., 'How much did I spend on office supplies?')">
+            <div class="sample-queries">
+                <span class="sample-query" onclick="setQuery('How much did I spend on office supplies?')">Office Supplies</span>
+                <span class="sample-query" onclick="setQuery('Show me restaurant expenses')">Restaurant Expenses</span>
+                <span class="sample-query" onclick="setQuery('What software subscriptions do I have?')">Software Subscriptions</span>
+                <span class="sample-query" onclick="setQuery('Travel expenses for business trips')">Travel Expenses</span>
+                <span class="sample-query" onclick="setQuery('Professional services invoices')">Professional Services</span>
+            </div>
+            <button class="btn" onclick="executeQuery()">Execute Query</button>
+            <div id="query-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 Document Analysis Test</h3>
+            <button class="btn" onclick="listAllDocuments()">List All Documents</button>
+            <button class="btn btn-secondary" onclick="clearAllData()">Clear All Data</button>
+            <div id="document-results"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the services
+        import { createVectorizationService } from '/src/services/vectorization-service.ts';
+        import { createAIService } from '/src/services/ai-document-service.ts';
+
+        let vectorService;
+        let aiService;
+
+        // Initialize services
+        async function initializeServices() {
+            try {
+                vectorService = createVectorizationService();
+                aiService = createAIService();
+                await vectorService.loadFromLocalStorage();
+                console.log('Services initialized successfully');
+            } catch (error) {
+                console.error('Error initializing services:', error);
+                document.getElementById('status-results').innerHTML = `<div class="error">Error initializing services: ${error.message}</div>`;
+            }
+        }
+
+        // Sample documents
+        const sampleDocuments = [
+            {
+                id: 'sample-1',
+                content: 'Office Supplies Purchase - Staples receipt for $125.67 on 2024-01-15. Items include printer paper, pens, sticky notes, and folders for the accounting department.',
+                metadata: {
+                    fileName: 'staples-receipt.pdf',
+                    type: 'receipt',
+                    category: 'Office Supplies',
+                    amount: 125.67,
+                    date: '2024-01-15',
+                    vendor: 'Staples'
+                }
+            },
+            {
+                id: 'sample-2', 
+                content: 'Client Dinner at Italian Restaurant - $89.50 on 2024-01-20. Business meal with potential client John Smith from ABC Corporation to discuss new project proposal.',
+                metadata: {
+                    fileName: 'italian-restaurant-receipt.pdf',
+                    type: 'receipt',
+                    category: 'Meals & Entertainment',
+                    amount: 89.50,
+                    date: '2024-01-20',
+                    vendor: 'Luigi\'s Italian Restaurant'
+                }
+            },
+            {
+                id: 'sample-3',
+                content: 'Software Subscription - Annual Adobe Creative Cloud license for $599.88 on 2024-01-25. Used for graphic design and marketing materials creation.',
+                metadata: {
+                    fileName: 'adobe-subscription.pdf',
+                    type: 'invoice',
+                    category: 'Software & Technology',
+                    amount: 599.88,
+                    date: '2024-01-25',
+                    vendor: 'Adobe Inc.'
+                }
+            }
+        ];
+
+        window.setQuery = function(query) {
+            document.getElementById('query-input').value = query;
+        };
+
+        window.checkVectorStore = async function() {
+            try {
+                const count = vectorService.getDocumentCount();
+                document.getElementById('status-results').innerHTML = `
+                    <div class="results">
+                        <p><strong>Document Count:</strong> ${count}</p>
+                        <p><strong>Status:</strong> ${count > 0 ? '✅ Vector store populated' : '⚠️ Vector store empty'}</p>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('status-results').innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        };
+
+        window.populateSampleData = async function() {
+            try {
+                document.getElementById('status-results').innerHTML = '<div class="loading">Populating sample data...</div>';
+                
+                let addedCount = 0;
+                for (const doc of sampleDocuments) {
+                    const existingDocs = vectorService.getAllDocuments();
+                    const exists = existingDocs.some(d => d.metadata.fileName === doc.metadata.fileName);
+                    
+                    if (!exists) {
+                        await vectorService.vectorizeDocument(doc.id, doc.content, doc.metadata);
+                        addedCount++;
+                    }
+                }
+                
+                document.getElementById('status-results').innerHTML = `
+                    <div class="results">
+                        <p><strong>✅ Sample data populated successfully!</strong></p>
+                        <p>Added ${addedCount} new documents</p>
+                        <p>Total documents: ${vectorService.getDocumentCount()}</p>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('status-results').innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        };
+
+        window.executeQuery = async function() {
+            const query = document.getElementById('query-input').value;
+            if (!query.trim()) {
+                document.getElementById('query-results').innerHTML = '<div class="error">Please enter a query</div>';
+                return;
+            }
+
+            try {
+                document.getElementById('query-results').innerHTML = '<div class="loading">Processing query...</div>';
+                
+                // Vector search
+                const searchResults = await vectorService.searchSimilarDocuments({
+                    query: query,
+                    topK: 5,
+                    threshold: 0.5
+                });
+
+                // AI analysis
+                const context = searchResults.map(r => ({
+                    content: r.document.content,
+                    metadata: r.document.metadata,
+                    similarity: r.similarity
+                }));
+
+                const aiResponse = await aiService.generateNaturalLanguageQuery(query, context);
+
+                // Display results
+                let resultsHTML = `
+                    <div class="results">
+                        <h4>🤖 AI Response:</h4>
+                        <p>${aiResponse.answer}</p>
+                        <p><strong>Confidence:</strong> ${(aiResponse.confidence * 100).toFixed(1)}%</p>
+                        
+                        <h4>📄 Found Documents (${searchResults.length}):</h4>
+                `;
+
+                searchResults.forEach((result, index) => {
+                    resultsHTML += `
+                        <div class="document-item">
+                            <strong>${index + 1}. ${result.document.metadata.fileName}</strong>
+                            <div class="similarity">Similarity: ${result.similarity.toFixed(3)}</div>
+                            <div>${result.document.content}</div>
+                            <div class="metadata">
+                                Amount: $${result.document.metadata.amount} | 
+                                Date: ${result.document.metadata.date} | 
+                                Vendor: ${result.document.metadata.vendor} | 
+                                Category: ${result.document.metadata.category}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                resultsHTML += '</div>';
+                document.getElementById('query-results').innerHTML = resultsHTML;
+                
+            } catch (error) {
+                document.getElementById('query-results').innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        };
+
+        window.listAllDocuments = async function() {
+            try {
+                const documents = vectorService.getAllDocuments();
+                
+                let resultsHTML = `
+                    <div class="results">
+                        <h4>📋 All Documents (${documents.length}):</h4>
+                `;
+
+                documents.forEach((doc, index) => {
+                    resultsHTML += `
+                        <div class="document-item">
+                            <strong>${index + 1}. ${doc.metadata.fileName}</strong>
+                            <div>${doc.content}</div>
+                            <div class="metadata">
+                                Amount: $${doc.metadata.amount} | 
+                                Date: ${doc.metadata.date} | 
+                                Vendor: ${doc.metadata.vendor} | 
+                                Category: ${doc.metadata.category}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                resultsHTML += '</div>';
+                document.getElementById('document-results').innerHTML = resultsHTML;
+                
+            } catch (error) {
+                document.getElementById('document-results').innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        };
+
+        window.clearAllData = async function() {
+            if (confirm('Are you sure you want to clear all vector data? This cannot be undone.')) {
+                try {
+                    vectorService.clearAllDocuments();
+                    document.getElementById('document-results').innerHTML = '<div class="results">✅ All data cleared successfully</div>';
+                } catch (error) {
+                    document.getElementById('document-results').innerHTML = `<div class="error">Error: ${error.message}</div>`;
+                }
+            }
+        };
+
+        // Initialize on page load
+        initializeServices();
+    </script>
+</body>
+</html>

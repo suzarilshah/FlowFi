@@ -1,0 +1,382 @@
+{
+  "deployment": {
+    "name": "flowfi-infrastructure",
+    "version": "1.0.0",
+    "description": "FlowFi AWS Infrastructure Deployment Configuration",
+    "environments": {
+      "dev": {
+        "region": "ap-southeast-1",
+        "profile": "flowfi-dev",
+        "stack_name": "flowfi-stack-dev",
+        "termination_protection": false,
+        "backup_retention_days": 7,
+        "enable_monitoring": true,
+        "security_level": "basic",
+        "cost_optimization": true
+      },
+      "staging": {
+        "region": "ap-southeast-1",
+        "profile": "flowfi-staging",
+        "stack_name": "flowfi-stack-staging",
+        "termination_protection": true,
+        "backup_retention_days": 30,
+        "enable_monitoring": true,
+        "security_level": "enhanced",
+        "cost_optimization": true
+      },
+      "prod": {
+        "region": "ap-southeast-1",
+        "profile": "flowfi-prod",
+        "stack_name": "flowfi-stack-prod",
+        "termination_protection": true,
+        "backup_retention_days": 90,
+        "enable_monitoring": true,
+        "security_level": "maximum",
+        "cost_optimization": false,
+        "multi_az": true,
+        "disaster_recovery": true
+      }
+    }
+  },
+  "security": {
+    "encryption": {
+      "at_rest": true,
+      "in_transit": true,
+      "key_rotation_days": 90,
+      "kms_key_alias": "alias/flowfi-master-key"
+    },
+    "access_control": {
+      "mfa_required": true,
+      "session_timeout_minutes": 60,
+      "password_policy": {
+        "min_length": 12,
+        "require_uppercase": true,
+        "require_lowercase": true,
+        "require_numbers": true,
+        "require_symbols": true,
+        "expiration_days": 90
+      }
+    },
+    "network": {
+      "vpc_flow_logs": true,
+      "network_acls": true,
+      "security_groups": {
+        "default_deny": true,
+        "least_privilege": true
+      }
+    },
+    "monitoring": {
+      "cloudtrail": true,
+      "config": true,
+      "guardduty": true,
+      "security_hub": true,
+      "cloudwatch_alarms": true
+    }
+  },
+  "infrastructure": {
+    "compute": {
+      "lambda": {
+        "runtime": "nodejs18.x",
+        "memory_size_mb": 512,
+        "timeout_seconds": 300,
+        "reserved_concurrent_executions": 100,
+        "dead_letter_queue": true,
+        "environment_variables_encryption": true,
+        "vpc_config": {
+          "security_group_ids": [],
+          "subnet_ids": []
+        }
+      },
+      "ecs": {
+        "cluster_name": "flowfi-cluster",
+        "task_definition_family": "flowfi-tasks",
+        "desired_count": 2,
+        "max_capacity": 10,
+        "min_capacity": 1,
+        "health_check_grace_period_seconds": 300
+      }
+    },
+    "storage": {
+      "s3": {
+        "versioning": true,
+        "encryption": "AES256",
+        "public_access_block": true,
+        "lifecycle_policy_days": 2555,
+        "transition_to_ia_days": 30,
+        "transition_to_glacier_days": 90,
+        "buckets": {
+          "documents": {
+            "name": "flowfi-documents",
+            "purpose": "Store uploaded documents and invoices",
+            "cors_enabled": true,
+            "logging_enabled": true
+          },
+          "backups": {
+            "name": "flowfi-backups",
+            "purpose": "Store application backups",
+            "versioning": true,
+            "cross_region_replication": true
+          },
+          "logs": {
+            "name": "flowfi-logs",
+            "purpose": "Store application and access logs",
+            "lifecycle_policy_days": 90
+          }
+        }
+      },
+      "database": {
+        "rds": {
+          "engine": "postgresql",
+          "engine_version": "14.9",
+          "instance_class": "db.t3.micro",
+          "allocated_storage": 20,
+          "max_allocated_storage": 100,
+          "backup_retention_period": 7,
+          "deletion_protection": true,
+          "encryption_enabled": true,
+          "auto_minor_version_upgrade": false,
+          "multi_az": false,
+          "performance_insights_enabled": true,
+          "enhanced_monitoring": true
+        },
+        "aurora": {
+          "engine": "aurora-postgresql",
+          "engine_version": "14.9",
+          "instance_class": "db.r5.large",
+          "backup_retention_period": 30,
+          "deletion_protection": true,
+          "encryption_enabled": true,
+          "auto_minor_version_upgrade": true,
+          "multi_az": true,
+          "performance_insights_enabled": true,
+          "serverless_v2": true
+        }
+      }
+    },
+    "network": {
+      "vpc": {
+        "cidr_block": "10.0.0.0/16",
+        "enable_dns_hostnames": true,
+        "enable_dns_support": true,
+        "enable_flow_logs": true,
+        "availability_zones": ["ap-southeast-1a", "ap-southeast-1b"],
+        "subnets": {
+          "public": {
+            "cidr_blocks": ["10.0.1.0/24", "10.0.2.0/24"],
+            "map_public_ip_on_launch": true
+          },
+          "private": {
+            "cidr_blocks": ["10.0.3.0/24", "10.0.4.0/24"],
+            "map_public_ip_on_launch": false
+          },
+          "isolated": {
+            "cidr_blocks": ["10.0.5.0/24", "10.0.6.0/24"]
+          }
+        }
+      },
+      "api_gateway": {
+        "type": "REST",
+        "endpoint_configuration": "REGIONAL",
+        "throttling": {
+          "burst_limit": 5000,
+          "rate_limit": 2000
+        },
+        "caching": {
+          "enabled": true,
+          "ttl_seconds": 300
+        },
+        "logging": {
+          "level": "INFO",
+          "full_request_response": false
+        }
+      }
+    },
+    "security": {
+      "waf": {
+        "enabled": true,
+        "rules": {
+          "rate_limiting": {
+            "limit": 2000,
+            "window_seconds": 300
+          },
+          "geo_blocking": {
+            "blocked_countries": ["CN", "RU", "KP", "IR"]
+          },
+          "ip_whitelist": [],
+          "sql_injection": true,
+          "xss_protection": true
+        }
+      },
+      "shield": {
+        "enabled": true,
+        "advanced": true
+      }
+    }
+  },
+  "monitoring": {
+    "cloudwatch": {
+      "log_groups": {
+        "retention_days": 14,
+        "encryption": true
+      },
+      "alarms": {
+        "enabled": true,
+        "notification_topics": ["flowfi-alerts"],
+        "thresholds": {
+          "lambda_errors": 10,
+          "api_gateway_4xx_errors": 100,
+          "api_gateway_5xx_errors": 10,
+          "database_cpu_utilization": 80,
+          "database_connections": 80
+        }
+      },
+      "dashboards": {
+        "enabled": true,
+        "auto_create": true,
+        "include_lambda_metrics": true,
+        "include_api_metrics": true,
+        "include_database_metrics": true
+      }
+    },
+    "xray": {
+      "enabled": true,
+      "sampling_rate": 0.1,
+      "encryption": true
+    },
+    "sns": {
+      "topics": {
+        "alerts": {
+          "name": "flowfi-alerts",
+          "display_name": "FlowFi System Alerts",
+          "encryption": true
+        },
+        "notifications": {
+          "name": "flowfi-notifications",
+          "display_name": "FlowFi User Notifications",
+          "encryption": true
+        }
+      }
+    }
+  },
+  "backup": {
+    "enabled": true,
+    "strategy": "automated",
+    "retention": {
+      "daily": 7,
+      "weekly": 4,
+      "monthly": 12,
+      "yearly": 7
+    },
+    "cross_region": {
+      "enabled": true,
+      "destination_region": "ap-southeast-2"
+    },
+    "vault": {
+      "encryption": true,
+      "access_policy": "restricted"
+    }
+  },
+  "disaster_recovery": {
+    "enabled": false,
+    "recovery_time_objective_hours": 4,
+    "recovery_point_objective_hours": 1,
+    "strategies": {
+      "pilot_light": {
+        "enabled": true,
+        "critical_services": ["database", "api-gateway", "lambda"]
+      },
+      "warm_standby": {
+        "enabled": false,
+        "capacity": 50
+      },
+      "multi_site": {
+        "enabled": false,
+        "capacity": 100
+      }
+    }
+  },
+  "cost_optimization": {
+    "enabled": true,
+    "strategies": {
+      "right_sizing": {
+        "enabled": true,
+        "schedule": "weekly"
+      },
+      "spot_instances": {
+        "enabled": false,
+        "max_bid_price_percentage": 70
+      },
+      "reserved_instances": {
+        "enabled": true,
+        "term": "1_year",
+        "payment_option": "partial_upfront"
+      },
+      "auto_scaling": {
+        "enabled": true,
+        "predictive_scaling": false
+      }
+    },
+    "budgets": {
+      "enabled": true,
+      "thresholds": {
+        "actual": 80,
+        "forecasted": 100
+      },
+      "notifications": ["flowfi-alerts"]
+    }
+  },
+  "compliance": {
+    "standards": {
+      "soc2": {
+        "enabled": false,
+        "controls": ["CC1.1", "CC2.1", "CC3.1", "CC4.1", "CC5.1"]
+      },
+      "pci_dss": {
+        "enabled": false,
+        "controls": ["PCI-1", "PCI-2", "PCI-3", "PCI-4", "PCI-5"]
+      },
+      "hipaa": {
+        "enabled": false,
+        "controls": ["HIPAA-1", "HIPAA-2", "HIPAA-3"]
+      },
+      "gdpr": {
+        "enabled": true,
+        "controls": ["GDPR-1", "GDPR-2", "GDPR-3", "GDPR-4"]
+      }
+    },
+    "reporting": {
+      "enabled": true,
+      "frequency": "monthly",
+      "recipients": ["compliance@flowfi.com"]
+    }
+  },
+  "deployment": {
+    "strategy": "blue_green",
+    "rollback": {
+      "enabled": true,
+      "automatic": true,
+      "conditions": [
+        "error_rate_threshold": 5,
+        "latency_threshold_ms": 5000,
+        "availability_threshold": 95
+      ]
+    },
+    "testing": {
+      "pre_deployment": {
+        "unit_tests": true,
+        "integration_tests": true,
+        "security_scan": true
+      },
+      "post_deployment": {
+        "smoke_tests": true,
+        "load_tests": false,
+        "security_validation": true
+      }
+    },
+    "notifications": {
+      "enabled": true,
+      "channels": ["email", "slack"],
+      "recipients": ["devops@flowfi.com"]
+    }
+  }
+}

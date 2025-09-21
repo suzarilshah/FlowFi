@@ -1,0 +1,285 @@
+{
+  "flowfi_aws_services": {
+    "description": "AWS Services Configuration for FlowFi Accounting Application",
+    "version": "1.0.0",
+    "last_updated": "2024-01-20",
+    "services": {
+      "storage": {
+        "s3": {
+          "buckets": [
+            {
+              "name": "flowfi-documents",
+              "purpose": "Store uploaded invoices, receipts, and financial documents",
+              "versioning": true,
+              "encryption": "AES256",
+              "lifecycle_policy": {
+                "transition_to_ia": "30_days",
+                "transition_to_glacier": "90_days"
+              },
+              "cors": {
+                "allowed_origins": ["http://localhost:5173", "https://*.vercel.app"],
+                "allowed_methods": ["GET", "PUT", "POST", "DELETE"],
+                "allowed_headers": ["*"]
+              }
+            },
+            {
+              "name": "flowfi-backups",
+              "purpose": "Store database backups and system exports",
+              "versioning": true,
+              "encryption": "AES256"
+            }
+          ]
+        }
+      },
+      "database": {
+        "rds": {
+          "instances": [
+            {
+              "identifier": "flowfi-main-db",
+              "engine": "postgres",
+              "engine_version": "15.4",
+              "instance_class": "db.t3.micro",
+              "allocated_storage": 20,
+              "storage_type": "gp2",
+              "multi_az": false,
+              "backup_retention": 7,
+              "backup_window": "03:00-04:00",
+              "maintenance_window": "sun:04:00-sun:05:00",
+              "deletion_protection": true,
+              "encrypted": true
+            }
+          ]
+        }
+      },
+      "compute": {
+        "lambda": {
+          "functions": [
+            {
+              "name": "flowfi-document-processor",
+              "runtime": "nodejs18.x",
+              "handler": "index.handler",
+              "timeout": 300,
+              "memory": 512,
+              "purpose": "Process uploaded documents using Textract",
+              "triggers": ["s3:ObjectCreated"]
+            },
+            {
+              "name": "flowfi-ai-categorizer",
+              "runtime": "nodejs18.x",
+              "handler": "index.handler",
+              "timeout": 180,
+              "memory": 256,
+              "purpose": "Categorize expenses using Bedrock AI",
+              "triggers": ["api_gateway"]
+            },
+            {
+              "name": "flowfi-report-generator",
+              "runtime": "nodejs18.x",
+              "handler": "index.handler",
+              "timeout": 600,
+              "memory": 1024,
+              "purpose": "Generate financial reports and compliance documents",
+              "triggers": ["scheduled_event"]
+            },
+            {
+              "name": "flowfi-notification-service",
+              "runtime": "nodejs18.x",
+              "handler": "index.handler",
+              "timeout": 60,
+              "memory": 128,
+              "purpose": "Send email notifications via SES",
+              "triggers": ["sns"]
+            }
+          ]
+        }
+      },
+      "ai_ml": {
+        "textract": {
+          "features": [
+            "TABLES",
+            "FORMS",
+            "QUERIES"
+          ],
+          "purpose": "Extract text and data from invoices and receipts",
+          "supported_formats": ["PDF", "PNG", "JPEG", "TIFF"]
+        },
+        "bedrock": {
+          "models": [
+            {
+              "id": "anthropic.claude-3-sonnet-20240229-v1:0",
+              "purpose": "Expense categorization and financial analysis",
+              "max_tokens": 4096
+            },
+            {
+              "id": "amazon.titan-text-express-v1",
+              "purpose": "Text summarization and document processing",
+              "max_tokens": 8192
+            }
+          ]
+        },
+        "comprehend": {
+          "features": [
+            "sentiment_analysis",
+            "entity_recognition",
+            "key_phrase_extraction"
+          ],
+          "purpose": "Analyze financial document content and extract insights"
+        }
+      },
+      "messaging": {
+        "ses": {
+          "configuration": {
+            "region": "us-east-1",
+            "verified_domains": [],
+            "verified_emails": [],
+            "daily_send_quota": 200,
+            "max_send_rate": 1
+          },
+          "templates": [
+            {
+              "name": "invoice_processed",
+              "subject": "Invoice Processed - {{invoice_number}}",
+              "purpose": "Notify when invoice processing is complete"
+            },
+            {
+              "name": "monthly_report",
+              "subject": "Monthly Financial Report - {{month}} {{year}}",
+              "purpose": "Send monthly financial summaries"
+            },
+            {
+              "name": "compliance_alert",
+              "subject": "Compliance Alert - Action Required",
+              "purpose": "Alert for compliance-related issues"
+            }
+          ]
+        },
+        "sns": {
+          "topics": [
+            {
+              "name": "flowfi-document-events",
+              "purpose": "Document processing events and notifications"
+            },
+            {
+              "name": "flowfi-system-alerts",
+              "purpose": "System alerts and error notifications"
+            }
+          ]
+        }
+      },
+      "api": {
+        "api_gateway": {
+          "apis": [
+            {
+              "name": "flowfi-backend-api",
+              "type": "REST",
+              "stage": "prod",
+              "cors_enabled": true,
+              "throttling": {
+                "rate_limit": 1000,
+                "burst_limit": 2000
+              },
+              "endpoints": [
+                "/documents",
+                "/expenses",
+                "/reports",
+                "/customers",
+                "/inventory",
+                "/ai/categorize",
+                "/ai/analyze"
+              ]
+            }
+          ]
+        }
+      },
+      "security": {
+        "iam": {
+          "roles": [
+            {
+              "name": "FlowFiLambdaRole",
+              "purpose": "Execution role for Lambda functions",
+              "policies": [
+                "AWSLambdaBasicExecutionRole",
+                "AmazonS3FullAccess",
+                "AmazonTextractFullAccess",
+                "AmazonBedrockFullAccess",
+                "AmazonSESFullAccess"
+              ]
+            },
+            {
+              "name": "FlowFiAPIGatewayRole",
+              "purpose": "API Gateway execution role",
+              "policies": [
+                "AmazonAPIGatewayInvokeFullAccess"
+              ]
+            }
+          ],
+          "policies": [
+            {
+              "name": "FlowFiS3DocumentsPolicy",
+              "purpose": "Access to FlowFi document buckets",
+              "actions": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject",
+                "s3:ListBucket"
+              ]
+            }
+          ]
+        }
+      },
+      "monitoring": {
+        "cloudwatch": {
+          "log_groups": [
+            "/aws/lambda/flowfi-document-processor",
+            "/aws/lambda/flowfi-ai-categorizer",
+            "/aws/lambda/flowfi-report-generator",
+            "/aws/lambda/flowfi-notification-service",
+            "/aws/apigateway/flowfi-backend-api"
+          ],
+          "metrics": [
+            "document_processing_time",
+            "ai_categorization_accuracy",
+            "api_response_time",
+            "error_rate"
+          ],
+          "alarms": [
+            {
+              "name": "HighErrorRate",
+              "metric": "error_rate",
+              "threshold": 5,
+              "comparison": "GreaterThanThreshold"
+            },
+            {
+              "name": "SlowAPIResponse",
+              "metric": "api_response_time",
+              "threshold": 5000,
+              "comparison": "GreaterThanThreshold"
+            }
+          ]
+        }
+      }
+    },
+    "estimated_costs": {
+      "monthly": {
+        "s3": "$5-15",
+        "rds": "$15-25",
+        "lambda": "$5-20",
+        "textract": "$10-50",
+        "bedrock": "$20-100",
+        "ses": "$1-5",
+        "api_gateway": "$3-10",
+        "cloudwatch": "$2-8",
+        "total_estimated": "$61-233"
+      }
+    },
+    "deployment_regions": {
+      "primary": "us-east-1",
+      "alternatives": ["ap-southeast-1", "eu-west-1"],
+      "considerations": {
+        "us-east-1": "Best for global applications, all services available",
+        "ap-southeast-1": "Good for Asia-Pacific, limited Bedrock models",
+        "eu-west-1": "Good for Europe, GDPR compliance"
+      }
+    }
+  }
+}

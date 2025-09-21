@@ -1,0 +1,12 @@
+{
+  "name": "flowfi-notification-service",
+  "version": "1.0.0",
+  "description": "FlowFi notification service Lambda function",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1490.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

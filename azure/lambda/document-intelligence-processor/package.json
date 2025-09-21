@@ -1,0 +1,19 @@
+{
+  "name": "document-intelligence-processor",
+  "version": "1.0.0",
+  "description": "Azure Function for processing invoices with Document Intelligence",
+  "main": "index.js",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@azure/ai-form-recognizer": "^5.0.0",
+    "@azure/storage-blob": "^12.17.0",
+    "@azure/identity": "^4.0.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

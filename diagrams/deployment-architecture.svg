@@ -1,0 +1,263 @@
+<svg viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="awsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff9900;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff6600;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="azureGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0078d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#005a9e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="securityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dc2626;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b91c1c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="monitoringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="800" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="500" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1e293b">
+    FlowFi Deployment Architecture
+  </text>
+  
+  <!-- AWS Region -->
+  <rect x="50" y="80" width="900" height="300" fill="url(#awsGradient)" rx="15" stroke="#ff6600" stroke-width="3"/>
+  <text x="100" y="110" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white">
+    AWS Cloud (us-east-1)
+  </text>
+  
+  <!-- Availability Zones -->
+  <rect x="70" y="130" width="420" height="230" fill="#ff9900" rx="10" stroke="#ff6600" stroke-width="2"/>
+  <text x="280" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    Availability Zone A
+  </text>
+  
+  <rect x="510" y="130" width="420" height="230" fill="#ff9900" rx="10" stroke="#ff6600" stroke-width="2"/>
+  <text x="720" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    Availability Zone B
+  </text>
+  
+  <!-- VPC -->
+  <rect x="90" y="170" width="380" height="180" fill="#ffe4b5" rx="8" stroke="#ff6600" stroke-width="2"/>
+  <text x="280" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ff6600">
+    VPC (10.0.0.0/16)
+  </text>
+  
+  <rect x="530" y="170" width="380" height="180" fill="#ffe4b5" rx="8" stroke="#ff6600" stroke-width="2"/>
+  <text x="720" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ff6600">
+    VPC (10.1.0.0/16)
+  </text>
+  
+  <!-- Public Subnet -->
+  <rect x="110" y="210" width="160" height="120" fill="#ffcc99" rx="5" stroke="#ff6600" stroke-width="1"/>
+  <text x="190" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#ff6600">
+    Public Subnet
+  </text>
+  <text x="190" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ff6600">
+    10.0.1.0/24
+  </text>
+  
+  <!-- Private Subnet -->
+  <rect x="280" y="210" width="170" height="120" fill="#ffcc99" rx="5" stroke="#ff6600" stroke-width="1"/>
+  <text x="365" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#ff6600">
+    Private Subnet
+  </text>
+  <text x="365" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ff6600">
+    10.0.2.0/24
+  </text>
+  
+  <!-- Public Subnet B -->
+  <rect x="550" y="210" width="160" height="120" fill="#ffcc99" rx="5" stroke="#ff6600" stroke-width="1"/>
+  <text x="630" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#ff6600">
+    Public Subnet
+  </text>
+  <text x="630" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ff6600">
+    10.1.1.0/24
+  </text>
+  
+  <!-- Private Subnet B -->
+  <rect x="720" y="210" width="170" height="120" fill="#ffcc99" rx="5" stroke="#ff6600" stroke-width="1"/>
+  <text x="805" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#ff6600">
+    Private Subnet
+  </text>
+  <text x="805" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ff6600">
+    10.1.2.0/24
+  </text>
+  
+  <!-- Load Balancer -->
+  <rect x="130" y="260" width="120" height="40" fill="#ff9900" rx="5" stroke="#ff6600" stroke-width="2"/>
+  <text x="190" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    ALB
+  </text>
+  <text x="190" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">
+    Application
+  </text>
+  
+  <rect x="570" y="260" width="120" height="40" fill="#ff9900" rx="5" stroke="#ff6600" stroke-width="2"/>
+  <text x="630" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    ALB
+  </text>
+  <text x="630" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">
+    Application
+  </text>
+  
+  <!-- ECS Services -->
+  <rect x="300" y="260" width="120" height="40" fill="#ff6600" rx="5" stroke="#cc5500" stroke-width="2"/>
+  <text x="360" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    ECS Service
+  </text>
+  <text x="360" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">
+    Backend API
+  </text>
+  
+  <rect x="740" y="260" width="120" height="40" fill="#ff6600" rx="5" stroke="#cc5500" stroke-width="2"/>
+  <text x="800" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    ECS Service
+  </text>
+  <text x="800" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">
+    Backend API
+  </text>
+  
+  <!-- Lambda Functions -->
+  <rect x="50" y="400" width="900" height="120" fill="#ffcc99" rx="10" stroke="#ff6600" stroke-width="2"/>
+  <text x="100" y="425" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ff6600">
+    AWS Lambda Functions
+  </text>
+  
+  <rect x="70" y="450" width="100" height="40" fill="#ff9900" rx="5" stroke="#ff6600" stroke-width="1"/>
+  <text x="120" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    Document
+  </text>
+  <text x="120" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">
+    Processor
+  </text>
+  
+  <rect x="190" y="450" width="100" height="40" fill="#ff9900" rx="5" stroke="#ff6600" stroke-width="1"/>
+  <text x="240" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    OCR
+  </text>
+  <text x="240" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">
+    Service
+  </text>
+  
+  <rect x="310" y="450" width="100" height="40" fill="#ff9900" rx="5" stroke="#ff6600" stroke-width="1"/>
+  <text x="360" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    AI
+  </text>
+  <text x="360" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">
+    Categorizer
+  </text>
+  
+  <rect x="430" y="450" width="100" height="40" fill="#ff9900" rx="5" stroke="#ff6600" stroke-width="1"/>
+  <text x="480" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    Search
+  </text>
+  <text x="480" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">
+    Service
+  </text>
+  
+  <rect x="550" y="450" width="100" height="40" fill="#ff9900" rx="5" stroke="#ff6600" stroke-width="1"/>
+  <text x="600" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    Report
+  </text>
+  <text x="600" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">
+    Generator
+  </text>
+  
+  <rect x="670" y="450" width="100" height="40" fill="#ff9900" rx="5" stroke="#ff6600" stroke-width="1"/>
+  <text x="720" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    Notification
+  </text>
+  <text x="720" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">
+    Service
+  </text>
+  
+  <rect x="790" y="450" width="100" height="40" fill="#ff9900" rx="5" stroke="#ff6600" stroke-width="1"/>
+  <text x="840" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    Backup
+  </text>
+  <text x="840" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">
+    Service
+  </text>
+  
+  <!-- Azure Services -->
+  <rect x="50" y="540" width="300" height="100" fill="url(#azureGradient)" rx="10" stroke="#005a9e" stroke-width="2"/>
+  <text x="200" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">
+    Azure Services
+  </text>
+  <text x="200" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">
+    Document Intelligence
+  </text>
+  <text x="200" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">
+    Cognitive Services
+  </text>
+  
+  <!-- Security Layer -->
+  <rect x="380" y="540" width="250" height="100" fill="url(#securityGradient)" rx="10" stroke="#b91c1c" stroke-width="2"/>
+  <text x="505" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">
+    Security Layer
+  </text>
+  <text x="505" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">
+    WAF | IAM | Secrets Manager
+  </text>
+  <text x="505" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">
+    Encryption | VPC Security Groups
+  </text>
+  
+  <!-- Monitoring Layer -->
+  <rect x="650" y="540" width="300" height="100" fill="url(#monitoringGradient)" rx="10" stroke="#047857" stroke-width="2"/>
+  <text x="800" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">
+    Monitoring & Logging
+  </text>
+  <text x="800" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">
+    CloudWatch | X-Ray | Sentry
+  </text>
+  <text x="800" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">
+    Performance Insights | Alerts
+  </text>
+  
+  <!-- Connection Lines -->
+  <!-- Vertical connections -->
+  <path d="M 500 160 L 500 170" stroke="#64748b" stroke-width="2" stroke-dasharray="3,3"/>
+  <path d="M 500 360 L 500 400" stroke="#64748b" stroke-width="2" stroke-dasharray="3,3"/>
+  <path d="M 500 500 L 500 540" stroke="#64748b" stroke-width="2" stroke-dasharray="3,3"/>
+  
+  <!-- Horizontal connections -->
+  <path d="M 190 280 L 360 280" stroke="#64748b" stroke-width="1"/>
+  <path d="M 630 280 L 800 280" stroke="#64748b" stroke-width="1"/>
+  
+  <!-- Lambda to services -->
+  <path d="M 120 450 L 280 450" stroke="#64748b" stroke-width="1"/>
+  <path d="M 240 450 L 280 450" stroke="#64748b" stroke-width="1"/>
+  <path d="M 360 450 L 430 450" stroke="#64748b" stroke-width="1"/>
+  <path d="M 480 450 L 550 450" stroke="#64748b" stroke-width="1"/>
+  <path d="M 600 450 L 670 450" stroke="#64748b" stroke-width="1"/>
+  <path d="M 720 450 L 790 450" stroke="#64748b" stroke-width="1"/>
+  <path d="M 840 450 L 850 450" stroke="#64748b" stroke-width="1"/>
+  
+  <!-- Deployment Indicators -->
+  <text x="50" y="680" font-family="Arial, sans-serif" font-size="12" fill="#1e293b">
+    Deployment Tools: AWS CDK | Terraform | GitHub Actions | Docker | ECS Fargate
+  </text>
+  <text x="50" y="700" font-family="Arial, sans-serif" font-size="12" fill="#1e293b">
+    High Availability: Multi-AZ | Auto Scaling | Load Balancing | Failover | Backup
+  </text>
+  <text x="50" y="720" font-family="Arial, sans-serif" font-size="12" fill="#1e293b">
+    Security: VPC Isolation | Private Subnets | IAM Roles | Encryption | WAF Protection
+  </text>
+  <text x="50" y="740" font-family="Arial, sans-serif" font-size="12" fill="#1e293b">
+    Monitoring: CloudWatch | X-Ray | Custom Metrics | Alerts | Performance Monitoring
+  </text>
+  
+  <!-- Legend -->
+  <rect x="50" y="760" width="900" height="30" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1" rx="5"/>
+  <text x="100" y="778" font-family="Arial, sans-serif" font-size="10" fill="#1e293b">
+    AWS Services | Azure Services | Security Layer | Monitoring | Multi-AZ Deployment | Auto Scaling
+  </text>
+</svg>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection Test</title>
+</head>
+<body>
+    <h1>Connection Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testConnections() {
+            const results = document.getElementById('results');
+            results.innerHTML = 'Testing connections...<br>';
+            
+            try {
+                // Test local server
+                console.log('Testing local server...');
+                const localResponse = await fetch('http://localhost:3001/health');
+                const localData = await localResponse.json();
+                console.log('Local server response:', localData);
+                results.innerHTML += `Local server: ✅ ${JSON.stringify(localData)}<br>`;
+                
+                // Test CORS by making a request from a different origin
+                console.log('Testing CORS...');
+                const corsResponse = await fetch('http://localhost:3001/health', {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Origin': 'http://localhost:8081'
+                    }
+                });
+                console.log('CORS test result:', corsResponse.ok);
+                results.innerHTML += `CORS test: ${corsResponse.ok ? '✅' : '❌'} ${corsResponse.ok ? 'Working' : 'Failed'}<br>`;
+                
+            } catch (error) {
+                console.error('Connection test failed:', error);
+                results.innerHTML += `Error: ❌ ${error.message}<br>`;
+            }
+        }
+        
+        testConnections();
+    </script>
+</body>
+</html>

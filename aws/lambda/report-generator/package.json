@@ -1,0 +1,12 @@
+{
+  "name": "flowfi-report-generator",
+  "version": "1.0.0",
+  "description": "FlowFi report generation Lambda function",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1490.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

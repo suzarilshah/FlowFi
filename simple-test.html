@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Upload Test</title>
+</head>
+<body>
+    <h1>Simple Document Upload Test</h1>
+    <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png">
+    <button onclick="uploadFile()">Upload File</button>
+    <div id="result"></div>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const resultDiv = document.getElementById('result');
+            
+            if (!fileInput.files[0]) {
+                resultDiv.innerHTML = 'Please select a file';
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('document', file);
+            formData.append('modelId', 'prebuilt-invoice');
+            
+            try {
+                const response = await fetch('http://localhost:3001/document/analyze', {
+                    method: 'POST',
+                    body: formData,
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = '<h3>Success!</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                } else {
+                    resultDiv.innerHTML = '<h3>Error!</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<h3>Network Error!</h3><p>' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>

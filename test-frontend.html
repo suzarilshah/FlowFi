@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Intelligence Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        .upload-area { border: 2px dashed #ccc; padding: 40px; text-align: center; margin: 20px 0; border-radius: 10px; }
+        .upload-area:hover { border-color: #007bff; background: #f8f9fa; }
+        button { background: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 10px; }
+        button:hover { background: #0056b3; }
+        .result { background: #f8f9fa; padding: 20px; border-radius: 5px; margin-top: 20px; white-space: pre-wrap; max-height: 400px; overflow-y: auto; }
+        .error { background: #f8d7da; color: #721c24; }
+        .success { background: #d4edda; color: #155724; }
+        .status { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        select { padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Document Intelligence Test</h1>
+        <p style="text-align: center; color: #666;">Test the local document intelligence integration</p>
+        
+        <div class="upload-area">
+            <h3>📄 Upload Document for Analysis</h3>
+            <form id="uploadForm">
+                <div>
+                    <label for="model">Analysis Model:</label><br>
+                    <select id="model" name="model">
+                        <option value="prebuilt-invoice">Invoice Analysis</option>
+                        <option value="prebuilt-receipt">Receipt Analysis</option>
+                        <option value="prebuilt-layout">Layout Analysis</option>
+                        <option value="prebuilt-read">Text Extraction</option>
+                    </select>
+                </div>
+                <br>
+                <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" required>
+                <br><br>
+                <button type="submit">🔄 Analyze Document</button>
+                <button type="button" onclick="testHealth()">🏥 Test Health</button>
+                <button type="button" onclick="testModels()">📋 Test Models</button>
+            </form>
+        </div>
+        
+        <div id="status"></div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Test health endpoint
+        async function testHealth() {
+            const statusDiv = document.getElementById('status');
+            const resultDiv = document.getElementById('result');
+            
+            statusDiv.innerHTML = '<div class="status">🏥 Testing health endpoint...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:3001/health');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.innerHTML = '<div class="status success">✅ Health check passed</div>';
+                    resultDiv.innerHTML = '<div class="result success">' + JSON.stringify(data, null, 2) + '</div>';
+                } else {
+                    statusDiv.innerHTML = '<div class="status error">❌ Health check failed</div>';
+                    resultDiv.innerHTML = '<div class="result error">' + JSON.stringify(data, null, 2) + '</div>';
+                }
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="status error">❌ Health check error</div>';
+                resultDiv.innerHTML = '<div class="result error">Error: ' + error.message + '</div>';
+            }
+        }
+
+        // Test models endpoint
+        async function testModels() {
+            const statusDiv = document.getElementById('status');
+            const resultDiv = document.getElementById('result');
+            
+            statusDiv.innerHTML = '<div class="status">📋 Testing models endpoint...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:3001/models');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.innerHTML = '<div class="status success">✅ Models endpoint working</div>';
+                    resultDiv.innerHTML = '<div class="result success">' + JSON.stringify(data, null, 2) + '</div>';
+                } else {
+                    statusDiv.innerHTML = '<div class="status error">❌ Models endpoint failed</div>';
+                    resultDiv.innerHTML = '<div class="result error">' + JSON.stringify(data, null, 2) + '</div>';
+                }
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="status error">❌ Models endpoint error</div>';
+                resultDiv.innerHTML = '<div class="result error">Error: ' + error.message + '</div>';
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const statusDiv = document.getElementById('status');
+            const resultDiv = document.getElementById('result');
+            const fileInput = document.getElementById('fileInput');
+            const modelSelect = document.getElementById('model');
+            
+            if (!fileInput.files[0]) {
+                statusDiv.innerHTML = '<div class="status error">❌ Please select a file</div>';
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const modelId = modelSelect.value;
+            
+            statusDiv.innerHTML = '<div class="status">📤 Uploading and analyzing document...</div>';
+            resultDiv.innerHTML = '';
+            
+            // Log file details
+            console.log('File details:', {
+                name: file.name,
+                type: file.type,
+                size: file.size,
+                lastModified: new Date(file.lastModified)
+            });
+            
+            try {
+                // Create FormData
+                const formData = new FormData();
+                formData.append('document', file);
+                formData.append('modelId', modelId);
+                
+                console.log('FormData created with:');
+                console.log('- document:', file.name, 'type:', file.type);
+                console.log('- modelId:', modelId);
+                
+                // Send to local server
+                const response = await fetch('http://localhost:3001/document/analyze', {
+                    method: 'POST',
+                    body: formData,
+                });
+                
+                console.log('Response status:', response.status, response.statusText);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.innerHTML = '<div class="status success">✅ Document analysis successful!</div>';
+                    resultDiv.innerHTML = '<div class="result success">' + JSON.stringify(data, null, 2) + '</div>';
+                } else {
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    statusDiv.innerHTML = '<div class="status error">❌ Document analysis failed</div>';
+                    resultDiv.innerHTML = '<div class="result error">Error: ' + errorText + '</div>';
+                }
+            } catch (error) {
+                console.error('Request error:', error);
+                statusDiv.innerHTML = '<div class="status error">❌ Request failed</div>';
+                resultDiv.innerHTML = '<div class="result error">Error: ' + error.message + '</div>';
+            }
+        });
+    </script>
+</body>
+</html>

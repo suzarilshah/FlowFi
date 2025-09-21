@@ -1,0 +1,9 @@
+{
+  "name": "s3-presigned-url-generator",
+  "version": "1.0.0",
+  "description": "Generates presigned URLs for S3 uploads",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1354.0"
+  }
+}

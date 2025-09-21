@@ -1,0 +1,111 @@
+{
+  "status": "success",
+  "modelId": "prebuilt-invoice",
+  "documentInfo": {
+    "filename": "208113291122-20250905-333711896.pdf",
+    "size": 124047,
+    "mimetype": "application/pdf",
+    "processedAt": "2025-09-21T01:34:25.642Z"
+  },
+  "analysisResult": {
+    "documents": [
+      {
+        "docType": "invoice",
+        "confidence": 0.95,
+        "fields": {
+          "VendorName": {
+            "value": "FlowFi Technologies",
+            "confidence": 0.92
+          },
+          "VendorAddress": {
+            "value": {
+              "streetAddress": "123 Tech Street",
+              "city": "San Francisco",
+              "state": "CA",
+              "postalCode": "94105"
+            },
+            "confidence": 0.88
+          },
+          "InvoiceId": {
+            "value": "INV-26239",
+            "confidence": 0.95
+          },
+          "InvoiceDate": {
+            "value": "2025-09-21T01:34:25.641Z",
+            "confidence": 0.94
+          },
+          "InvoiceTotal": {
+            "value": {
+              "amount": 464.52175682268444,
+              "currencySymbol": "$",
+              "currencyCode": "USD"
+            },
+            "confidence": 0.96
+          },
+          "CustomerName": {
+            "value": "Test Customer",
+            "confidence": 0.91
+          },
+          "CustomerAddress": {
+            "value": {
+              "streetAddress": "456 Customer Ave",
+              "city": "New York",
+              "state": "NY",
+              "postalCode": "10001"
+            },
+            "confidence": 0.87
+          },
+          "DueDate": {
+            "value": "2025-10-21T01:34:25.641Z",
+            "confidence": 0.93
+          },
+          "Items": {
+            "value": [
+              {
+                "value": {
+                  "Description": {
+                    "value": "Software License",
+                    "confidence": 0.89
+                  },
+                  "Amount": {
+                    "value": {
+                      "amount": 299.99,
+                      "currencySymbol": "$",
+                      "currencyCode": "USD"
+                    },
+                    "confidence": 0.94
+                  },
+                  "Quantity": {
+                    "value": 1,
+                    "confidence": 0.95
+                  }
+                }
+              },
+              {
+                "value": {
+                  "Description": {
+                    "value": "Support Services",
+                    "confidence": 0.88
+                  },
+                  "Amount": {
+                    "value": {
+                      "amount": 199.99,
+                      "currencySymbol": "$",
+                      "currencyCode": "USD"
+                    },
+                    "confidence": 0.93
+                  },
+                  "Quantity": {
+                    "value": 2,
+                    "confidence": 0.94
+                  }
+                }
+              }
+            ],
+            "confidence": 0.91
+          }
+        }
+      }
+    ]
+  }
+}

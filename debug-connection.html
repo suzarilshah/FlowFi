@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Azure Document Intelligence Connection</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        pre { background-color: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Azure Document Intelligence Connection Debug</h1>
+    
+    <div id="results"></div>
+    
+    <script>
+        const resultsDiv = document.getElementById('results');
+        
+        function addResult(title, content, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = `<strong>${title}</strong><br>${content}`;
+            resultsDiv.appendChild(div);
+        }
+        
+        async function testConnections() {
+            addResult('Starting connection tests...', 'Testing various endpoints', 'info');
+            
+            // Test local server health
+            try {
+                const healthResponse = await fetch('http://localhost:3001/health');
+                const healthData = await healthResponse.json();
+                addResult('Local Server Health', `Status: ${healthResponse.status}<br>Data: ${JSON.stringify(healthData, null, 2)}`, healthResponse.ok ? 'success' : 'error');
+            } catch (error) {
+                addResult('Local Server Health Failed', error.message, 'error');
+            }
+            
+            // Test local server models
+            try {
+                const modelsResponse = await fetch('http://localhost:3001/models');
+                const modelsData = await modelsResponse.json();
+                addResult('Local Server Models', `Status: ${modelsResponse.status}<br>Models: ${modelsData.models ? modelsData.models.length : 0} available`, modelsResponse.ok ? 'success' : 'error');
+            } catch (error) {
+                addResult('Local Server Models Failed', error.message, 'error');
+            }
+            
+            // Test Azure endpoint (if configured)
+            try {
+                const apiKey = prompt('Please enter your Azure Document Intelligence API key for testing:');
+                if (!apiKey) {
+                    addResult('Azure Document Intelligence Skipped', 'No API key provided', 'info');
+                    return;
+                }
+                
+                const azureResponse = await fetch('https://flowfi.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2023-07-31', {
+                    method: 'GET',
+                    headers: {
+                        'Ocp-Apim-Subscription-Key': apiKey,
+                    },
+                });
+                addResult('Azure Document Intelligence', `Status: ${azureResponse.status}<br>Status Text: ${azureResponse.statusText}`, azureResponse.ok ? 'success' : 'error');
+            } catch (error) {
+                addResult('Azure Document Intelligence Failed', error.message, 'error');
+            }
+            
+            addResult('Tests Complete', 'All connection tests have been completed', 'info');
+        }
+        
+        // Run tests when page loads
+        testConnections();
+    </script>
+</body>
+</html>

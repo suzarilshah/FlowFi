@@ -1,0 +1,393 @@
+{
+  "monitoring": {
+    "cloudwatch": {
+      "dashboards": {
+        "flowfi-overview": {
+          "name": "FlowFi-Overview",
+          "widgets": [
+            {
+              "type": "metric",
+              "properties": {
+                "metrics": [
+                  ["AWS/Lambda", "Invocations", "FunctionName", "FlowFiExpenseProcessor"],
+                  ["AWS/Lambda", "Errors", "FunctionName", "FlowFiExpenseProcessor"],
+                  ["AWS/Lambda", "Duration", "FunctionName", "FlowFiExpenseProcessor"]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "ap-southeast-1",
+                "title": "Lambda Function Metrics"
+              }
+            },
+            {
+              "type": "metric",
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "CPUUtilization", "DBInstanceIdentifier", "flowfi-database"],
+                  ["AWS/RDS", "DatabaseConnections", "DBInstanceIdentifier", "flowfi-database"],
+                  ["AWS/RDS", "FreeStorageSpace", "DBInstanceIdentifier", "flowfi-database"]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "ap-southeast-1",
+                "title": "Database Metrics"
+              }
+            },
+            {
+              "type": "metric",
+              "properties": {
+                "metrics": [
+                  ["AWS/S3", "BucketSizeBytes", "BucketName", "flowfi-documents"],
+                  ["AWS/S3", "NumberOfObjects", "BucketName", "flowfi-documents"]
+                ],
+                "period": 3600,
+                "stat": "Average",
+                "region": "ap-southeast-1",
+                "title": "S3 Storage Metrics"
+              }
+            },
+            {
+              "type": "metric",
+              "properties": {
+                "metrics": [
+                  ["AWS/ApiGateway", "Count", "ApiName", "FlowFiAPI"],
+                  ["AWS/ApiGateway", "4XXError", "ApiName", "FlowFiAPI"],
+                  ["AWS/ApiGateway", "5XXError", "ApiName", "FlowFiAPI"]
+                ],
+                "period": 300,
+                "stat": "Sum",
+                "region": "ap-southeast-1",
+                "title": "API Gateway Metrics"
+              }
+            }
+          ]
+        }
+      },
+      "alarms": {
+        "lambda": {
+          "high-error-rate": {
+            "name": "FlowFi-LambdaHighErrorRate",
+            "description": "Lambda function error rate is too high",
+            "metric": "Errors",
+            "threshold": 10,
+            "period": 300,
+            "evaluation_periods": 2,
+            "statistic": "Sum",
+            "comparison_operator": "GreaterThanThreshold",
+            "treat_missing_data": "notBreaching"
+          },
+          "high-duration": {
+            "name": "FlowFi-LambdaHighDuration",
+            "description": "Lambda function duration is too high",
+            "metric": "Duration",
+            "threshold": 30000,
+            "period": 300,
+            "evaluation_periods": 2,
+            "statistic": "Average",
+            "comparison_operator": "GreaterThanThreshold",
+            "treat_missing_data": "notBreaching"
+          },
+          "throttles": {
+            "name": "FlowFi-LambdaThrottles",
+            "description": "Lambda function is being throttled",
+            "metric": "Throttles",
+            "threshold": 5,
+            "period": 300,
+            "evaluation_periods": 1,
+            "statistic": "Sum",
+            "comparison_operator": "GreaterThanThreshold",
+            "treat_missing_data": "notBreaching"
+          }
+        },
+        "rds": {
+          "high-cpu": {
+            "name": "FlowFi-RDSHighCPU",
+            "description": "Database CPU utilization is too high",
+            "metric": "CPUUtilization",
+            "threshold": 80,
+            "period": 300,
+            "evaluation_periods": 3,
+            "statistic": "Average",
+            "comparison_operator": "GreaterThanThreshold",
+            "treat_missing_data": "notBreaching"
+          },
+          "low-storage": {
+            "name": "FlowFi-RDSLowStorage",
+            "description": "Database storage space is running low",
+            "metric": "FreeStorageSpace",
+            "threshold": 5000000000,
+            "period": 300,
+            "evaluation_periods": 2,
+            "statistic": "Average",
+            "comparison_operator": "LessThanThreshold",
+            "treat_missing_data": "notBreaching"
+          },
+          "high-connections": {
+            "name": "FlowFi-RDSHighConnections",
+            "description": "Database connection count is too high",
+            "metric": "DatabaseConnections",
+            "threshold": 80,
+            "period": 300,
+            "evaluation_periods": 2,
+            "statistic": "Average",
+            "comparison_operator": "GreaterThanThreshold",
+            "treat_missing_data": "notBreaching"
+          }
+        },
+        "s3": {
+          "bucket-size": {
+            "name": "FlowFi-S3BucketSize",
+            "description": "S3 bucket size is growing rapidly",
+            "metric": "BucketSizeBytes",
+            "threshold": 100000000000,
+            "period": 3600,
+            "evaluation_periods": 2,
+            "statistic": "Average",
+            "comparison_operator": "GreaterThanThreshold",
+            "treat_missing_data": "notBreaching"
+          }
+        },
+        "api-gateway": {
+          "high-4xx-errors": {
+            "name": "FlowFi-APIHigh4XXErrors",
+            "description": "API Gateway 4XX error rate is too high",
+            "metric": "4XXError",
+            "threshold": 50,
+            "period": 300,
+            "evaluation_periods": 2,
+            "statistic": "Sum",
+            "comparison_operator": "GreaterThanThreshold",
+            "treat_missing_data": "notBreaching"
+          },
+          "high-5xx-errors": {
+            "name": "FlowFi-APIHigh5XXErrors",
+            "description": "API Gateway 5XX error rate is too high",
+            "metric": "5XXError",
+            "threshold": 10,
+            "period": 300,
+            "evaluation_periods": 2,
+            "statistic": "Sum",
+            "comparison_operator": "GreaterThanThreshold",
+            "treat_missing_data": "notBreaching"
+          }
+        },
+        "security": {
+          "unauthorized-api-calls": {
+            "name": "FlowFi-UnauthorizedAPICalls",
+            "description": "Unauthorized API calls detected",
+            "metric": "UnauthorizedAPICalls",
+            "threshold": 5,
+            "period": 300,
+            "evaluation_periods": 1,
+            "statistic": "Sum",
+            "comparison_operator": "GreaterThanThreshold",
+            "treat_missing_data": "notBreaching"
+          },
+          "root-account-usage": {
+            "name": "FlowFi-RootAccountUsage",
+            "description": "Root account usage detected",
+            "metric": "RootAccountUsage",
+            "threshold": 1,
+            "period": 300,
+            "evaluation_periods": 1,
+            "statistic": "Sum",
+            "comparison_operator": "GreaterThanThreshold",
+            "treat_missing_data": "notBreaching"
+          }
+        }
+      }
+    },
+    "sns": {
+      "topics": {
+        "alerts": {
+          "name": "FlowFi-AlertTopic",
+          "display_name": "FlowFi Monitoring Alerts",
+          "subscriptions": [
+            {
+              "protocol": "email",
+              "endpoint": "alerts@flowfi.com"
+            },
+            {
+              "protocol": "sms",
+              "endpoint": "+1234567890"
+            }
+          ]
+        }
+      }
+    },
+    "cost-monitoring": {
+      "budgets": {
+        "monthly": {
+          "name": "FlowFi-MonthlyBudget",
+          "limit": 1000,
+          "time_unit": "MONTHLY",
+          "cost_types": {
+            "include_tax": true,
+            "include_subscription": true,
+            "include_support": true,
+            "include_other_subscription": true,
+            "include_upfront": true,
+            "include_discount": true
+          },
+          "notifications": [
+            {
+              "threshold": 80,
+              "threshold_type": "PERCENTAGE",
+              "notification_type": "FORECASTED"
+            },
+            {
+              "threshold": 100,
+              "threshold_type": "PERCENTAGE",
+              "notification_type": "ACTUAL"
+            }
+          ]
+        }
+      },
+      "cost-anomaly-detection": {
+        "monitor": {
+          "name": "FlowFi-CostAnomalyMonitor",
+          "type": "AWS_SERVICES",
+          "threshold": 20
+        }
+      }
+    }
+  },
+  "logging": {
+    "cloudwatch-logs": {
+      "log-groups": {
+        "lambda-functions": {
+          "name": "/aws/lambda/flowfi",
+          "retention_days": 30,
+          "encryption": true
+        },
+        "api-gateway": {
+          "name": "/aws/apigateway/flowfi",
+          "retention_days": 30,
+          "encryption": true
+        },
+        "rds-audit": {
+          "name": "/aws/rds/instance/flowfi-database/audit",
+          "retention_days": 90,
+          "encryption": true
+        }
+      },
+      "log-streams": {
+        "lambda-expense-processor": "expense-processor",
+        "lambda-document-analyzer": "document-analyzer",
+        "api-gateway-access": "access-logs",
+        "api-gateway-error": "error-logs"
+      }
+    },
+    "application-logs": {
+      "levels": {
+        "error": "ERROR",
+        "warn": "WARN",
+        "info": "INFO",
+        "debug": "DEBUG"
+      },
+      "structured-logging": {
+        "enabled": true,
+        "format": "json",
+        "fields": [
+          "timestamp",
+          "level",
+          "message",
+          "request_id",
+          "user_id",
+          "function_name",
+          "duration",
+          "error_code"
+        ]
+      }
+    }
+  },
+  "performance-monitoring": {
+    "lambda-insights": {
+      "enabled": true,
+      "layers": {
+        "nodejs": "arn:aws:lambda:ap-southeast-1:580247275435:layer:LambdaInsightsExtension:14"
+      }
+    },
+    "x-ray": {
+      "enabled": true,
+      "sampling-rules": {
+        "default": {
+          "fixed_rate": 0.1,
+          "reservoir_size": 1,
+          "service_name": "*",
+          "service_type": "*"
+        },
+        "critical-paths": {
+          "fixed_rate": 1.0,
+          "reservoir_size": 5,
+          "service_name": "flowfi-api",
+          "service_type": "AWS::ApiGateway::RestApi"
+        }
+      }
+    },
+    "custom-metrics": {
+      "business-metrics": {
+        "expense-processing-time": {
+          "name": "ExpenseProcessingTime",
+          "unit": "Milliseconds",
+          "dimensions": [
+            "Environment",
+            "DocumentType"
+          ]
+        },
+        "document-analysis-accuracy": {
+          "name": "DocumentAnalysisAccuracy",
+          "unit": "Percent",
+          "dimensions": [
+            "Environment",
+            "DocumentType"
+          ]
+        },
+        "user-activity": {
+          "name": "UserActivity",
+          "unit": "Count",
+          "dimensions": [
+            "Environment",
+            "UserType",
+            "Action"
+          ]
+        }
+      }
+    }
+  },
+  "backup-monitoring": {
+    "backup-vault": {
+      "name": "FlowFi-BackupVault",
+      "encryption": true,
+      "access-policy": {
+        "deny-deletion": true,
+        "min-retention-days": 7
+      }
+    },
+    "backup-plans": {
+      "daily-backup": {
+        "name": "FlowFi-DailyBackup",
+        "rules": [
+          {
+            "rule_name": "DailyBackupRule",
+            "target_vault": "FlowFi-BackupVault",
+            "schedule_expression": "cron(0 2 * * ? *)",
+            "start_window_minutes": 60,
+            "completion_window_minutes": 120,
+            "lifecycle": {
+              "move_to_cold_storage_after_days": 30,
+              "delete_after_days": 365
+            }
+          }
+        ]
+      }
+    },
+    "recovery-testing": {
+      "automated-testing": {
+        "enabled": true,
+        "schedule": "cron(0 6 * * SUN)",
+        "retention-days": 1
+      }
+    }
+  }
+}

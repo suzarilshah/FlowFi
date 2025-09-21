@@ -1,0 +1,1433 @@
+{
+  "documentType": "invoice",
+  "confidence": 1,
+  "fields": {
+    "AmountDue": {
+      "kind": "currency",
+      "value": {
+        "amount": 145.22,
+        "currencySymbol": "MYR",
+        "currencyCode": "MYR"
+      },
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 6.8832,
+              "y": 7.2887
+            },
+            {
+              "x": 7.6801,
+              "y": 7.2887
+            },
+            {
+              "x": 7.6801,
+              "y": 7.4562
+            },
+            {
+              "x": 6.8832,
+              "y": 7.4562
+            }
+          ]
+        }
+      ],
+      "content": "MYR 145.22",
+      "spans": [
+        {
+          "offset": 1212,
+          "length": 10
+        }
+      ],
+      "confidence": 0.35
+    },
+    "CustomerAddress": {
+      "kind": "address",
+      "value": {
+        "road": "BLK D",
+        "city": "Shah Alam",
+        "state": "Selangor",
+        "postalCode": "40150",
+        "countryRegion": "MALAYSIA",
+        "streetAddress": "BLK D UNIT 11",
+        "unit": "UNIT 11",
+        "house": "UTROPOLIS SERVICE APARTMENT BLOCK D\nUTROPOLIS",
+        "level": "LVL 7"
+      },
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 0.5634,
+              "y": 2.01
+            },
+            {
+              "x": 4.6091,
+              "y": 2.01
+            },
+            {
+              "x": 4.6091,
+              "y": 2.68
+            },
+            {
+              "x": 0.5634,
+              "y": 2.68
+            }
+          ]
+        }
+      ],
+      "content": "BLK D, LVL 7, UNIT 11, UTROPOLIS SERVICE APARTMENT BLOCK D\nUTROPOLIS JALAN KONTRAKTOR U1/14\n40150 Shah Alam Selangor\nMALAYSIA",
+      "spans": [
+        {
+          "offset": 358,
+          "length": 58
+        },
+        {
+          "offset": 450,
+          "length": 32
+        },
+        {
+          "offset": 499,
+          "length": 33
+        }
+      ],
+      "confidence": 0.724
+    },
+    "CustomerAddressRecipient": {
+      "kind": "string",
+      "value": "MUHAMMAD SUZARILSHAH BIN ZAKARIA",
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 0.5685,
+              "y": 1.8273
+            },
+            {
+              "x": 3.1116,
+              "y": 1.8273
+            },
+            {
+              "x": 3.1116,
+              "y": 1.9745
+            },
+            {
+              "x": 0.5685,
+              "y": 1.9745
+            }
+          ]
+        }
+      ],
+      "content": "MUHAMMAD SUZARILSHAH BIN ZAKARIA",
+      "spans": [
+        {
+          "offset": 294,
+          "length": 32
+        }
+      ],
+      "confidence": 0.909
+    },
+    "CustomerId": {
+      "kind": "string",
+      "value": "208113291122 08",
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 2.2639,
+              "y": 0.4517
+            },
+            {
+              "x": 3.132,
+              "y": 0.4517
+            },
+            {
+              "x": 3.132,
+              "y": 0.5685
+            },
+            {
+              "x": 2.2639,
+              "y": 0.5685
+            }
+          ]
+        }
+      ],
+      "content": "208113291122 08",
+      "spans": [
+        {
+          "offset": 20,
+          "length": 15
+        }
+      ],
+      "confidence": 0.466
+    },
+    "CustomerName": {
+      "kind": "string",
+      "value": "MUHAMMAD SUZARILSHAH BIN ZAKARIA",
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 0.5685,
+              "y": 1.8273
+            },
+            {
+              "x": 3.1116,
+              "y": 1.8273
+            },
+            {
+              "x": 3.1116,
+              "y": 1.9745
+            },
+            {
+              "x": 0.5685,
+              "y": 1.9745
+            }
+          ]
+        }
+      ],
+      "content": "MUHAMMAD SUZARILSHAH BIN ZAKARIA",
+      "spans": [
+        {
+          "offset": 294,
+          "length": 32
+        }
+      ],
+      "confidence": 0.909
+    },
+    "DueDate": {
+      "kind": "date",
+      "value": "2025-10-05T00:00:00.000Z",
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 6.5076,
+              "y": 3.756
+            },
+            {
+              "x": 7.3096,
+              "y": 3.756
+            },
+            {
+              "x": 7.3096,
+              "y": 3.8931
+            },
+            {
+              "x": 6.5076,
+              "y": 3.8931
+            }
+          ]
+        }
+      ],
+      "content": "5 Oct 2025",
+      "spans": [
+        {
+          "offset": 827,
+          "length": 10
+        }
+      ],
+      "confidence": 0.916
+    },
+    "InvoiceDate": {
+      "kind": "date",
+      "value": "2025-09-05T00:00:00.000Z",
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 2.4974,
+              "y": 0.8172
+            },
+            {
+              "x": 3.132,
+              "y": 0.8121
+            },
+            {
+              "x": 3.132,
+              "y": 0.9339
+            },
+            {
+              "x": 2.5025,
+              "y": 0.9238
+            }
+          ]
+        }
+      ],
+      "content": "05/09/2025",
+      "spans": [
+        {
+          "offset": 77,
+          "length": 10
+        }
+      ],
+      "confidence": 0.941
+    },
+    "InvoiceId": {
+      "kind": "string",
+      "value": "333711896",
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 2.5888,
+              "y": 0.6395
+            },
+            {
+              "x": 3.1269,
+              "y": 0.6294
+            },
+            {
+              "x": 3.1269,
+              "y": 0.7461
+            },
+            {
+              "x": 2.5888,
+              "y": 0.736
+            }
+          ]
+        }
+      ],
+      "content": "333711896",
+      "spans": [
+        {
+          "offset": 54,
+          "length": 9
+        }
+      ],
+      "confidence": 0.941
+    },
+    "InvoiceTotal": {
+      "kind": "currency",
+      "value": {
+        "amount": 145.22,
+        "currencySymbol": "MYR",
+        "currencyCode": "MYR"
+      },
+      "boundingRegions": [
+        {
+          "pageNumber": 3,
+          "polygon": [
+            {
+              "x": 6.8984,
+              "y": 4.1265
+            },
+            {
+              "x": 7.6751,
+              "y": 4.1266
+            },
+            {
+              "x": 7.6751,
+              "y": 4.2637
+            },
+            {
+              "x": 6.8984,
+              "y": 4.2636
+            }
+          ]
+        }
+      ],
+      "content": "MYR 145.22",
+      "spans": [
+        {
+          "offset": 3258,
+          "length": 10
+        }
+      ],
+      "confidence": 0.948
+    },
+    "Items": {
+      "kind": "array",
+      "values": [
+        {
+          "kind": "object",
+          "properties": {
+            "Amount": {
+              "kind": "currency",
+              "value": {
+                "amount": 145.22,
+                "currencyCode": "MYR"
+              },
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    {
+                      "x": 7.3045,
+                      "y": 4.492
+                    },
+                    {
+                      "x": 7.6751,
+                      "y": 4.4869
+                    },
+                    {
+                      "x": 7.6751,
+                      "y": 4.5986
+                    },
+                    {
+                      "x": 7.3096,
+                      "y": 4.5986
+                    }
+                  ]
+                }
+              ],
+              "content": "145.22",
+              "spans": [
+                {
+                  "offset": 872,
+                  "length": 6
+                }
+              ],
+              "confidence": 0.733
+            }
+          },
+          "boundingRegions": [
+            {
+              "pageNumber": 1,
+              "polygon": [
+                {
+                  "x": 0.5838,
+                  "y": 4.4869
+                },
+                {
+                  "x": 7.6751,
+                  "y": 4.4869
+                },
+                {
+                  "x": 7.6751,
+                  "y": 4.8118
+                },
+                {
+                  "x": 0.5838,
+                  "y": 4.8118
+                }
+              ]
+            }
+          ],
+          "content": "145.22\nTotal Payment Received\n-145.22",
+          "spans": [
+            {
+              "offset": 872,
+              "length": 37
+            }
+          ],
+          "confidence": 0.428
+        },
+        {
+          "kind": "object",
+          "properties": {
+            "Amount": {
+              "kind": "currency",
+              "value": {
+                "amount": 139,
+                "currencyCode": "MYR"
+              },
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    {
+                      "x": 7.2893,
+                      "y": 6.0401
+                    },
+                    {
+                      "x": 7.6649,
+                      "y": 6.035
+                    },
+                    {
+                      "x": 7.6649,
+                      "y": 6.1619
+                    },
+                    {
+                      "x": 7.2944,
+                      "y": 6.1518
+                    }
+                  ]
+                }
+              ],
+              "content": "139.00",
+              "spans": [
+                {
+                  "offset": 1059,
+                  "length": 6
+                }
+              ],
+              "confidence": 0.887
+            },
+            "Description": {
+              "kind": "string",
+              "value": "Service Charges",
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    {
+                      "x": 0.8579,
+                      "y": 6.0324
+                    },
+                    {
+                      "x": 1.8332,
+                      "y": 6.0376
+                    },
+                    {
+                      "x": 1.8325,
+                      "y": 6.1772
+                    },
+                    {
+                      "x": 0.8572,
+                      "y": 6.1721
+                    }
+                  ]
+                }
+              ],
+              "content": "Service Charges",
+              "spans": [
+                {
+                  "offset": 1043,
+                  "length": 15
+                }
+              ],
+              "confidence": 0.853
+            }
+          },
+          "boundingRegions": [
+            {
+              "pageNumber": 1,
+              "polygon": [
+                {
+                  "x": 0.8581,
+                  "y": 5.9994
+                },
+                {
+                  "x": 7.6656,
+                  "y": 6.035
+                },
+                {
+                  "x": 7.6647,
+                  "y": 6.2077
+                },
+                {
+                  "x": 0.8572,
+                  "y": 6.1721
+                }
+              ]
+            }
+          ],
+          "content": "Service Charges\n139.00",
+          "spans": [
+            {
+              "offset": 1043,
+              "length": 22
+            }
+          ],
+          "confidence": 0.894
+        },
+        {
+          "kind": "object",
+          "properties": {
+            "Amount": {
+              "kind": "currency",
+              "value": {
+                "amount": -2,
+                "currencyCode": "MYR"
+              },
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    {
+                      "x": 7.3451,
+                      "y": 6.2431
+                    },
+                    {
+                      "x": 7.6548,
+                      "y": 6.2381
+                    },
+                    {
+                      "x": 7.6598,
+                      "y": 6.3599
+                    },
+                    {
+                      "x": 7.3502,
+                      "y": 6.3548
+                    }
+                  ]
+                }
+              ],
+              "content": "-2.00",
+              "spans": [
+                {
+                  "offset": 1078,
+                  "length": 5
+                }
+              ],
+              "confidence": 0.704
+            },
+            "Description": {
+              "kind": "string",
+              "value": "Discount(s)",
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    {
+                      "x": 0.8528,
+                      "y": 6.233
+                    },
+                    {
+                      "x": 1.5533,
+                      "y": 6.233
+                    },
+                    {
+                      "x": 1.5533,
+                      "y": 6.37
+                    },
+                    {
+                      "x": 0.8528,
+                      "y": 6.3649
+                    }
+                  ]
+                }
+              ],
+              "content": "Discount(s)",
+              "spans": [
+                {
+                  "offset": 1066,
+                  "length": 11
+                }
+              ],
+              "confidence": 0.719
+            }
+          },
+          "boundingRegions": [
+            {
+              "pageNumber": 1,
+              "polygon": [
+                {
+                  "x": 0.8529,
+                  "y": 6.2133
+                },
+                {
+                  "x": 7.6602,
+                  "y": 6.2381
+                },
+                {
+                  "x": 7.6597,
+                  "y": 6.3922
+                },
+                {
+                  "x": 0.8523,
+                  "y": 6.3674
+                }
+              ]
+            }
+          ],
+          "content": "Discount(s)\n-2.00",
+          "spans": [
+            {
+              "offset": 1066,
+              "length": 17
+            }
+          ],
+          "confidence": 0.57
+        },
+        {
+          "kind": "object",
+          "properties": {
+            "Amount": {
+              "kind": "currency",
+              "value": {
+                "amount": -145.22,
+                "currencyCode": "MYR"
+              },
+              "boundingRegions": [
+                {
+                  "pageNumber": 2,
+                  "polygon": [
+                    {
+                      "x": 7.2284,
+                      "y": 1.0405
+                    },
+                    {
+                      "x": 7.6801,
+                      "y": 1.0405
+                    },
+                    {
+                      "x": 7.6801,
+                      "y": 1.1623
+                    },
+                    {
+                      "x": 7.2334,
+                      "y": 1.1573
+                    }
+                  ]
+                }
+              ],
+              "content": "-145.22",
+              "spans": [
+                {
+                  "offset": 1749,
+                  "length": 7
+                }
+              ],
+              "confidence": 0.872
+            },
+            "Date": {
+              "kind": "date",
+              "value": "2025-08-09T00:00:00.000Z",
+              "boundingRegions": [
+                {
+                  "pageNumber": 2,
+                  "polygon": [
+                    {
+                      "x": 6.0152,
+                      "y": 1.0405
+                    },
+                    {
+                      "x": 6.5786,
+                      "y": 1.0354
+                    },
+                    {
+                      "x": 6.5786,
+                      "y": 1.1674
+                    },
+                    {
+                      "x": 6.0203,
+                      "y": 1.1623
+                    }
+                  ]
+                }
+              ],
+              "content": "09/08/25",
+              "spans": [
+                {
+                  "offset": 1740,
+                  "length": 8
+                }
+              ],
+              "confidence": 0.853
+            },
+            "Description": {
+              "kind": "string",
+              "value": "Payment",
+              "boundingRegions": [
+                {
+                  "pageNumber": 2,
+                  "polygon": [
+                    {
+                      "x": 1.3249,
+                      "y": 1.0354
+                    },
+                    {
+                      "x": 1.868,
+                      "y": 1.0354
+                    },
+                    {
+                      "x": 1.8731,
+                      "y": 1.1826
+                    },
+                    {
+                      "x": 1.3249,
+                      "y": 1.1725
+                    }
+                  ]
+                }
+              ],
+              "content": "Payment",
+              "spans": [
+                {
+                  "offset": 1732,
+                  "length": 7
+                }
+              ],
+              "confidence": 0.489
+            }
+          },
+          "boundingRegions": [
+            {
+              "pageNumber": 2,
+              "polygon": [
+                {
+                  "x": 0.7921,
+                  "y": 1.0022
+                },
+                {
+                  "x": 7.6808,
+                  "y": 1.0405
+                },
+                {
+                  "x": 7.6798,
+                  "y": 1.2149
+                },
+                {
+                  "x": 0.7911,
+                  "y": 1.1766
+                }
+              ]
+            }
+          ],
+          "content": "1\nPayment\n09/08/25\n-145.22",
+          "spans": [
+            {
+              "offset": 1730,
+              "length": 26
+            }
+          ],
+          "confidence": 0.844
+        },
+        {
+          "kind": "object",
+          "properties": {
+            "Description": {
+              "kind": "string",
+              "value": "Broadband",
+              "boundingRegions": [
+                {
+                  "pageNumber": 3,
+                  "polygon": [
+                    {
+                      "x": 0.8528,
+                      "y": 1.3248
+                    },
+                    {
+                      "x": 1.5787,
+                      "y": 1.3197
+                    },
+                    {
+                      "x": 1.5787,
+                      "y": 1.4567
+                    },
+                    {
+                      "x": 0.8528,
+                      "y": 1.4517
+                    }
+                  ]
+                }
+              ],
+              "content": "Broadband",
+              "spans": [
+                {
+                  "offset": 2933,
+                  "length": 9
+                }
+              ],
+              "confidence": 0.632
+            }
+          },
+          "boundingRegions": [
+            {
+              "pageNumber": 3,
+              "polygon": [
+                {
+                  "x": 0.8528,
+                  "y": 1.3248
+                },
+                {
+                  "x": 1.5787,
+                  "y": 1.3197
+                },
+                {
+                  "x": 1.5787,
+                  "y": 1.4567
+                },
+                {
+                  "x": 0.8528,
+                  "y": 1.4517
+                }
+              ]
+            }
+          ],
+          "content": "Broadband",
+          "spans": [
+            {
+              "offset": 2933,
+              "length": 9
+            }
+          ],
+          "confidence": 0.149
+        },
+        {
+          "kind": "object",
+          "properties": {
+            "Amount": {
+              "kind": "currency",
+              "value": {
+                "amount": 139,
+                "currencyCode": "AUD"
+              },
+              "boundingRegions": [
+                {
+                  "pageNumber": 3,
+                  "polygon": [
+                    {
+                      "x": 7.2487,
+                      "y": 1.5024
+                    },
+                    {
+                      "x": 7.6598,
+                      "y": 1.5024
+                    },
+                    {
+                      "x": 7.6598,
+                      "y": 1.6293
+                    },
+                    {
+                      "x": 7.2537,
+                      "y": 1.6293
+                    }
+                  ]
+                }
+              ],
+              "content": "139.00",
+              "spans": [
+                {
+                  "offset": 3003,
+                  "length": 6
+                }
+              ],
+              "confidence": 0.952
+            },
+            "Description": {
+              "kind": "string",
+              "value": "TIME Fibre Home Broadband 600Mbps (05/09/2025 - 04/10/2025)",
+              "boundingRegions": [
+                {
+                  "pageNumber": 3,
+                  "polygon": [
+                    {
+                      "x": 0.8579,
+                      "y": 1.4872
+                    },
+                    {
+                      "x": 5.3604,
+                      "y": 1.4872
+                    },
+                    {
+                      "x": 5.3604,
+                      "y": 1.6547
+                    },
+                    {
+                      "x": 0.8579,
+                      "y": 1.6547
+                    }
+                  ]
+                }
+              ],
+              "content": "TIME Fibre Home Broadband 600Mbps (05/09/2025 - 04/10/2025)",
+              "spans": [
+                {
+                  "offset": 2943,
+                  "length": 59
+                }
+              ],
+              "confidence": 0.722
+            }
+          },
+          "boundingRegions": [
+            {
+              "pageNumber": 3,
+              "polygon": [
+                {
+                  "x": 0.8579,
+                  "y": 1.4872
+                },
+                {
+                  "x": 7.6598,
+                  "y": 1.4872
+                },
+                {
+                  "x": 7.6598,
+                  "y": 1.6547
+                },
+                {
+                  "x": 0.8579,
+                  "y": 1.6547
+                }
+              ]
+            }
+          ],
+          "content": "TIME Fibre Home Broadband 600Mbps (05/09/2025 - 04/10/2025)\n139.00",
+          "spans": [
+            {
+              "offset": 2943,
+              "length": 66
+            }
+          ],
+          "confidence": 0.702
+        }
+      ]
+    },
+    "PreviousUnpaidBalance": {
+      "kind": "currency",
+      "value": {
+        "amount": 0,
+        "currencySymbol": "MYR",
+        "currencyCode": "MYR"
+      },
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 5.1066,
+              "y": 2.7815
+            },
+            {
+              "x": 5.8324,
+              "y": 2.7815
+            },
+            {
+              "x": 5.8324,
+              "y": 2.9591
+            },
+            {
+              "x": 5.1066,
+              "y": 2.9591
+            }
+          ]
+        }
+      ],
+      "content": "MYR 0.00",
+      "spans": [
+        {
+          "offset": 569,
+          "length": 8
+        }
+      ],
+      "confidence": 0.796
+    },
+    "RemittanceAddress": {
+      "kind": "address",
+      "value": {
+        "road": "Jalan Majistret U1/26, HICOM Glenmarie\nIndustrial Park",
+        "city": "Shah Alam",
+        "state": "Selangor",
+        "postalCode": "40150",
+        "countryRegion": "Malaysia",
+        "streetAddress": "Jalan Majistret U1/26, HICOM Glenmarie\nIndustrial Park",
+        "house": "No.14"
+      },
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 0.5685,
+              "y": 11.0041
+            },
+            {
+              "x": 3.071,
+              "y": 11.0041
+            },
+            {
+              "x": 3.071,
+              "y": 11.395
+            },
+            {
+              "x": 0.5685,
+              "y": 11.395
+            }
+          ]
+        }
+      ],
+      "content": "No.14, Jalan Majistret U1/26, HICOM Glenmarie\nIndustrial Park, 40150 Shah Alam,\nSelangor, Malaysia",
+      "spans": [
+        {
+          "offset": 1511,
+          "length": 79
+        },
+        {
+          "offset": 1613,
+          "length": 18
+        }
+      ],
+      "confidence": 0.212
+    },
+    "RemittanceAddressRecipient": {
+      "kind": "string",
+      "value": "TT dotCom Sdn Bhd",
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 0.5838,
+              "y": 10.8062
+            },
+            {
+              "x": 1.67,
+              "y": 10.8062
+            },
+            {
+              "x": 1.67,
+              "y": 10.9331
+            },
+            {
+              "x": 0.5838,
+              "y": 10.9331
+            }
+          ]
+        }
+      ],
+      "content": "TT dotCom Sdn Bhd",
+      "spans": [
+        {
+          "offset": 1428,
+          "length": 17
+        }
+      ],
+      "confidence": 0.363
+    },
+    "SubTotal": {
+      "kind": "currency",
+      "value": {
+        "amount": 137,
+        "currencyCode": "MYR"
+      },
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 7.2893,
+              "y": 6.4868
+            },
+            {
+              "x": 7.6649,
+              "y": 6.4817
+            },
+            {
+              "x": 7.6649,
+              "y": 6.6086
+            },
+            {
+              "x": 7.2893,
+              "y": 6.5984
+            }
+          ]
+        }
+      ],
+      "content": "137.00",
+      "spans": [
+        {
+          "offset": 1094,
+          "length": 6
+        }
+      ],
+      "confidence": 0.843
+    },
+    "TotalDiscount": {
+      "kind": "currency",
+      "value": {
+        "amount": -2,
+        "currencyCode": "MYR"
+      },
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 7.3451,
+              "y": 6.2431
+            },
+            {
+              "x": 7.6548,
+              "y": 6.2381
+            },
+            {
+              "x": 7.6598,
+              "y": 6.3599
+            },
+            {
+              "x": 7.3502,
+              "y": 6.3548
+            }
+          ]
+        }
+      ],
+      "content": "-2.00",
+      "spans": [
+        {
+          "offset": 1078,
+          "length": 5
+        }
+      ],
+      "confidence": 0.629
+    },
+    "TotalTax": {
+      "kind": "currency",
+      "value": {
+        "amount": 8.22,
+        "currencyCode": "MYR"
+      },
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 7.4213,
+              "y": 6.7609
+            },
+            {
+              "x": 7.6751,
+              "y": 6.7609
+            },
+            {
+              "x": 7.6751,
+              "y": 6.8827
+            },
+            {
+              "x": 7.4213,
+              "y": 6.8776
+            }
+          ]
+        }
+      ],
+      "content": "8.22",
+      "spans": [
+        {
+          "offset": 1150,
+          "length": 4
+        }
+      ],
+      "confidence": 0.843
+    },
+    "VendorAddress": {
+      "kind": "address",
+      "value": {
+        "road": "Jalan Majistret U1/26,\nHICOM Glenmarie Industrial Park",
+        "city": "Shah Alam",
+        "state": "Selangor",
+        "postalCode": "40150",
+        "countryRegion": "Malaysia",
+        "streetAddress": "Jalan Majistret U1/26,\nHICOM Glenmarie Industrial Park",
+        "house": "No.14"
+      },
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 5.6649,
+              "y": 1.208
+            },
+            {
+              "x": 7.6903,
+              "y": 1.208
+            },
+            {
+              "x": 7.6903,
+              "y": 1.5938
+            },
+            {
+              "x": 5.6649,
+              "y": 1.5938
+            }
+          ]
+        }
+      ],
+      "content": "No.14, Jalan Majistret U1/26,\nHICOM Glenmarie Industrial Park,\n40150 Shah Alam, Selangor, Malaysia",
+      "spans": [
+        {
+          "offset": 154,
+          "length": 98
+        }
+      ],
+      "confidence": 0.823
+    },
+    "VendorAddressRecipient": {
+      "kind": "string",
+      "value": "TT dotCom Sdn Bhd 197901008085",
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 5.2335,
+              "y": 1.071
+            },
+            {
+              "x": 7.1319,
+              "y": 1.071
+            },
+            {
+              "x": 7.1319,
+              "y": 1.1979
+            },
+            {
+              "x": 5.2335,
+              "y": 1.1979
+            }
+          ]
+        }
+      ],
+      "content": "TT dotCom Sdn Bhd 197901008085",
+      "spans": [
+        {
+          "offset": 113,
+          "length": 30
+        }
+      ],
+      "confidence": 0.468
+    },
+    "VendorName": {
+      "kind": "string",
+      "value": "time®",
+      "boundingRegions": [
+        {
+          "pageNumber": 1,
+          "polygon": [
+            {
+              "x": 6.5786,
+              "y": 0.4416
+            },
+            {
+              "x": 7.6243,
+              "y": 0.4467
+            },
+            {
+              "x": 7.6395,
+              "y": 0.7969
+            },
+            {
+              "x": 6.5837,
+              "y": 0.807
+            }
+          ]
+        }
+      ],
+      "content": "time®",
+      "spans": [
+        {
+          "offset": 36,
+          "length": 5
+        }
+      ],
+      "confidence": 0.926
+    },
+    "PaymentDetails": {
+      "kind": "array",
+      "values": [
+        {
+          "kind": "object",
+          "properties": {
+            "BPayBillerCode": {
+              "kind": "string",
+              "value": "5553",
+              "boundingRegions": [
+                {
+                  "pageNumber": 2,
+                  "polygon": [
+                    {
+                      "x": 4.6751,
+                      "y": 10.0956
+                    },
+                    {
+                      "x": 4.9035,
+                      "y": 10.1007
+                    },
+                    {
+                      "x": 4.9035,
+                      "y": 10.2022
+                    },
+                    {
+                      "x": 4.6802,
+                      "y": 10.2022
+                    }
+                  ]
+                }
+              ],
+              "content": "5553",
+              "spans": [
+                {
+                  "offset": 2483,
+                  "length": 4
+                }
+              ],
+              "confidence": 0.461
+            }
+          },
+          "confidence": 0.995
+        }
+      ]
+    },
+    "ServiceEndDate": {
+      "kind": "date",
+      "value": "2025-04-10T00:00:00.000Z",
+      "boundingRegions": [
+        {
+          "pageNumber": 3,
+          "polygon": [
+            {
+              "x": 4.538,
+              "y": 1.4872
+            },
+            {
+              "x": 5.3553,
+              "y": 1.4872
+            },
+            {
+              "x": 5.3604,
+              "y": 1.6496
+            },
+            {
+              "x": 4.538,
+              "y": 1.6547
+            }
+          ]
+        }
+      ],
+      "content": "04/10/2025)",
+      "spans": [
+        {
+          "offset": 2991,
+          "length": 11
+        }
+      ],
+      "confidence": 0.843
+    },
+    "ServiceStartDate": {
+      "kind": "date",
+      "value": "2024-05-09T00:00:00.000Z",
+      "boundingRegions": [
+        {
+          "pageNumber": 3,
+          "polygon": [
+            {
+              "x": 3.5228,
+              "y": 1.4872
+            },
+            {
+              "x": 4.3705,
+              "y": 1.4872
+            },
+            {
+              "x": 4.3756,
+              "y": 1.6547
+            },
+            {
+              "x": 3.5279,
+              "y": 1.6547
+            }
+          ]
+        }
+      ],
+      "content": "(05/09/2025",
+      "spans": [
+        {
+          "offset": 2977,
+          "length": 11
+        }
+      ],
+      "confidence": 0.752
+    }
+  },
+  "timestamp": "2025-09-21T01:29:42.754Z"
+}
