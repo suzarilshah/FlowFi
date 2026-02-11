@@ -55,7 +55,7 @@
     "aws-cdk": "^2.1029.2",
     "aws-cdk-lib": "^2.215.0",
     "aws-sdk": "^2.1691.0",
-    "axios": "^1.12.2",
+    "axios": "^1.13.5",
     "babel-plugin-react-dev-locator": "^1.0.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
